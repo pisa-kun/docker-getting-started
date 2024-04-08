@@ -4,7 +4,15 @@ dockerのチュートリアルを写経して、dockerの基礎について勉�
 
 https://docs.docker.jp/get-started/02_our_app.html
 
-## 
+## execution command
+
+#### 実行
+> docker run -dp 127.0.0.1:3000:3000 getting-started
+
+#### lsコマンド
+> docker ps
+
+##
 
 This tutorial was written with the intent of helping folks get up and running
 with containers and is designed to work with Docker Desktop. While not going too much 

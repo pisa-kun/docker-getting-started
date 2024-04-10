@@ -72,3 +72,36 @@ https://docs.docker.jp/get-started/05_persisting_data.html
 ソースコードを修正することですぐにアプリに反映される。
 
 ## 複数コンテナのアプリ
+
+コンテナをネットワークに加えて、コンテナ同士で通信する。
+
+ネットワークの作成
+> docker network create todo-app
+
+MySQLの起動と、ネットワークへの接続。powershellで実行。
+> docker run -d `
+     --network todo-app --network-alias mysql `
+     -v todo-mysql-data:/var/lib/mysql `
+     -e MYSQL_ROOT_PASSWORD=secret `
+     -e MYSQL_DATABASE=todos `
+     mysql:8.0
+
+データベースへの接続
+> docker exec -it <mysql-container-id> mysql -u root -p
+
+データベースの中身確認
+> mysql> SHOW DATABASES;
+
+MySQLとアプリの接続。この時にmysqlのコンテナも起動していないといけない。
+> docker run -dp 127.0.0.1:3000:3000 `
+   -w /app -v "$(pwd):/app" `
+   --network todo-app `
+   -e MYSQL_HOST=mysql `
+   -e MYSQL_USER=root `
+   -e MYSQL_PASSWORD=secret `
+   -e MYSQL_DB=todos `
+   node:18-alpine `
+   sh -c "yarn install && yarn run dev"
+
+## Docker Compose
+https://docs.docker.jp/get-started/08_using_compose.html

@@ -41,7 +41,7 @@ https://docs.docker.jp/get-started/05_persisting_data.html
 > docker exec <container-id> cat /data.txt
 
 コンテナを起動して、ボリュームのマウントを指定する
-> docker run -dp 127.0.0.1:3000:3000 --mount type=volume,src=todo-db,target=/etc/todos getting-started
+> docker run -dp 127.0.0.1:3000:3000 --mount type=volume,src=todo-db,target=/etc/todos <image-name>
 
 
 > docker volume inspect todo-db
@@ -58,3 +58,17 @@ https://docs.docker.jp/get-started/05_persisting_data.html
     }
 ]
 ```
+
+## Bind Mount
+バインドマウントのコマンド
+> docker run -it --mount "type=bind,src=$pwd,target=/src" ubuntu bash
+
+開発用のコンテナでアプリを実行(/app へ移動必要)
+> docker run -dp 127.0.0.1:3000:3000 -w /app --mount "type=bind,src=$pwd,target=/app" node:18-alpine sh -c "yarn install && yarn run dev"
+
+ログの出力
+> docker logs <container-id>
+
+ソースコードを修正することですぐにアプリに反映される。
+
+## 複数コンテナのアプリ

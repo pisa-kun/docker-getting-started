@@ -12,30 +12,49 @@ https://docs.docker.jp/get-started/02_our_app.html
 #### lsコマンド
 > docker ps
 
-##
+#### docker アカウントへのログイン
+> docker login -u username  
+> Password:
 
-This tutorial was written with the intent of helping folks get up and running
-with containers and is designed to work with Docker Desktop. While not going too much 
-into depth, it covers the following topics:
+#### タグの作成
+> docker tag getting-started username/getting-started
 
-- Running your first container
-- Building containers
-- Learning what containers are
-- Running and removing containers
-- Using volumes to persist data
-- Using bind mounts to support development
-- Using container networking to support multi-container applications
-- Using Docker Compose to simplify the definition and sharing of applications
-- Using image layer caching to speed up builds and reduce push/pull size
-- Using multi-stage builds to separate build-time and runtime dependencies
+e.g.(repositoryの作成)  
+> docker tag tag-test username/hogetest
 
-## Getting Started
+#### イメージの送信
+> docker push username/getting-started
 
-If you wish to run the tutorial, you can use the following command after installing Docker Desktop:
+e.g.  
+> docker push username/hogetest
 
-```bash
-docker run -d -p 80:80 docker/getting-started
+#### ローカル上のイメージ確認
+> docker image ls
+
+> docker run -dp 127.0.0.1:3000:3000 images
+
+## データベースの保持
+
+https://docs.docker.jp/get-started/05_persisting_data.html
+
+コマンドラインからコンテナへのアクセス
+> docker exec <container-id> cat /data.txt
+
+コンテナを起動して、ボリュームのマウントを指定する
+> docker run -dp 127.0.0.1:3000:3000 --mount type=volume,src=todo-db,target=/etc/todos getting-started
+
+
+> docker volume inspect todo-db
 ```
-
-Once it has started, you can open your browser to [http://localhost](http://localhost).
-
+[
+    {
+        "CreatedAt": "2024-04-10T13:47:31Z",
+        "Driver": "local",
+        "Labels": null,
+        "Mountpoint": "/var/lib/docker/volumes/todo-db/_data",
+        "Name": "todo-db",
+        "Options": null,
+        "Scope": "local"
+    }
+]
+```
